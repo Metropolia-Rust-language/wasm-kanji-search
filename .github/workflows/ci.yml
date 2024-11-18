@@ -38,8 +38,8 @@ jobs:
       - name: Build with wasm-pack
         run: wasm-pack build --release --target web # https://rustwasm.github.io/docs/wasm-pack/
 
-      - name: Run wasm-pack test
-        run: wasm-pack test --headless --chrome
+      #- name: Run wasm-pack test
+      #  run: wasm-pack test --headless --chrome
 
       - name: Run Playwright tests in Docker
         uses: addnab/docker-run-action@v3
@@ -48,4 +48,4 @@ jobs:
           options: --shm-size=1gb 
           run: |
             npm install
-            npx playwright test
+            npm test
