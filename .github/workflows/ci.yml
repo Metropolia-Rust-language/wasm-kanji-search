@@ -9,7 +9,8 @@ on:
 jobs:
   test:
     name: Test with wasm-pack and Playwright
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
+    timeout-minutes: 12 # Even the Coopers' running test is faster than this...
 
     steps:
       # Checkout the repository, https://github.com/actions/checkout
@@ -35,8 +36,8 @@ jobs:
         run: cargo install wasm-pack
       - name: Build with wasm-pack
         run: wasm-pack build --release --target web
-      #- name: Run wasm-pack test
-      #  run: wasm-pack test --headless --chrome
+      - name: Run wasm-pack test with Firefox
+        run: wasm-pack test --headless --firefox
 
       # Use separate Docker instance, https://github.com/addnab/docker-run-action
       - name: Run Playwright tests in Docker

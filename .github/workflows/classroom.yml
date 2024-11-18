@@ -17,6 +17,8 @@ jobs:
     # https://github.com/rust-lang/rustup/tags
     # https://releases.rs/
     runs-on: ubuntu-latest
+    timeout-minutes: 12 # Even the Coopers' running test is faster than this...
+
     if: github.actor != 'github-classroom[bot]'
     steps:
     - name: Checkout code

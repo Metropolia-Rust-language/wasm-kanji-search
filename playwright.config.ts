@@ -5,6 +5,7 @@ export default defineConfig({
   retries: 1,
   workers: 1,
   reporter: 'html',
+  timeout: 5000, // 5 seconds
 
   use: {
     // Base URL to use in actions like `await page.goto('/')`.
