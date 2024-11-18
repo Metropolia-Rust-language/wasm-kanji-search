@@ -8,7 +8,7 @@ export default defineConfig({
 
   use: {
     // Base URL to use in actions like `await page.goto('/')`.
-    baseURL: 'http://127.0.0.1:8899/index.html',
+    baseURL: 'http://127.0.0.1:8899',
 
     // Collect trace when retrying the failed test.
     trace: 'on-first-retry',
@@ -21,9 +21,8 @@ export default defineConfig({
     },
   ],
   // Run your local dev server before starting the tests.
-  /*
   webServer: {
     command: 'python3 -m http.server 8899',
     url: 'http://127.0.0.1:8899',
-  },*/
+  },
 });

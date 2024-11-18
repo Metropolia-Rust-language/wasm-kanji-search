@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('show the only kanji with 23 strokes', async ({ page }) => {
   // Navigate to the target page
-  await page.goto('/index.html');
+  await page.goto('/');
 
   // Input the search term
   await page.fill('#filter', '23');
@@ -15,7 +15,7 @@ test('show the only kanji with 23 strokes', async ({ page }) => {
 
 test('person has both readings available', async ({ page }) => {
   // Navigate to the target page
-  await page.goto('/index.html');
+  await page.goto('/');
 
   // Input the search term
   await page.fill('#filter', '2');
@@ -32,9 +32,9 @@ test('person has both readings available', async ({ page }) => {
   const row = page.getByRole('row').filter({ has: cell });
 
   // Onyomi should be present
-  expect(row).toContainText('jin');
-  expect(row).toContainText('nin');
+  await expect(row).toContainText('jin');
+  await expect(row).toContainText('nin');
 
   // Kunyomi should be present
-  expect(row).toContainText('hito');
+  await expect(row).toContainText('hito');
 });
