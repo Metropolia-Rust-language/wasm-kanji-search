@@ -8,44 +8,42 @@ on:
 
 jobs:
   test:
-    name: Test with wasm-pack
+    name: Test with wasm-pack and Playwright
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
+      # Checkout the repository, https://github.com/actions/checkout
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Set up Rust
-      - name: Set up Rust
-        uses: actions-rs/toolchain@v1
+      # Set up Rust, https://github.com/actions-rust-lang/setup-rust-toolchain
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: stable
-          override: true
 
-      # Cache Cargo dependencies
+      # Cache Cargo dependencies, https://github.com/actions/cache
       - name: Cache Cargo registry
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cargo/registry
           key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-cargo-registry-
 
+      # https://rustwasm.github.io/docs/wasm-pack/
       - name: Install wasm-pack
         run: cargo install wasm-pack
-
       - name: Build with wasm-pack
-        run: wasm-pack build --release --target web # https://rustwasm.github.io/docs/wasm-pack/
-
+        run: wasm-pack build --release --target web
       #- name: Run wasm-pack test
       #  run: wasm-pack test --headless --chrome
 
+      # Use separate Docker instance, https://github.com/addnab/docker-run-action
       - name: Run Playwright tests in Docker
         uses: addnab/docker-run-action@v3
         with:
           image: mcr.microsoft.com/playwright:v1.48.1-noble
-          options: --shm-size=1gb 
+          options: --shm-size=1gb # More memory to run browser
           run: |
             npm install
             npm test
