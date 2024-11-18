@@ -27,38 +27,28 @@ jobs:
         cargo install wasm-pack
 
     # https://github.com/classroom-resources/autograding-io-grader
-    - name: Autograding Test Coverage
-      id: auto-coverage
+    - name: Autograding build
+      id: auto-build
       uses: classroom-resources/autograding-io-grader@v1
       with:
-        test-name: 'Unit test coverage'
-        command: 'cargo tarpaulin'
-        expected-output: '100.00% coverage'
+        test-name: 'Build release'
+        command: 'wasm-pack build --release --target web'
+        expected-output: ':-) Your wasm pkg is ready to publish at'
         comparison-method: 'contains'
 
-    - name: Autograding PNG file 1
-      id: auto-png-1
+    - name: Autograding test
+      id: auto-test
       uses: classroom-resources/autograding-io-grader@v1
       with:
-        test-name: 'PNG file is saved when using lower case letters'
-        command: 'cargo run -- "hello there" && ls'
-        expected-output: '12998c017066eb0d2a70b94e6ed3192985855ce390f321bbdb832022888bd251.png'
-        comparison-method: 'contains'
-
-    - name: Autograding PNG file 2
-      id: auto-png-2
-      uses: classroom-resources/autograding-io-grader@v1
-      with:
-        test-name: 'PNG file is saved when using capital letter'
-        command: 'cargo run -- "Hello there" && ls'
-        expected-output: '4e47826698bb4630fb4451010062fadbf85d61427cbdfaed7ad0f23f239bed89.png'
+        test-name: 'Testing with Firefox'
+        command: 'wasm-pack test --headless --firefox'
+        expected-output: 'test result: ok.'
         comparison-method: 'contains'
 
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        AUTO-COVERAGE_RESULTS: "${{steps.auto-coverage.outputs.result}}"
-        AUTO-PNG-1_RESULTS: "${{steps.auto-png-1.outputs.result}}"
-        AUTO-PNG-2_RESULTS: "${{steps.auto-png-2.outputs.result}}"
+        AUTO-BUILD_RESULTS: "${{steps.auto-build.outputs.result}}"
+        AUTO-TEST_RESULTS: "${{steps.auto-test.outputs.result}}"
       with:
-        runners: auto-coverage,auto-png-1,auto-png-2
+        runners: auto-build,auto-test
