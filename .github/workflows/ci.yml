@@ -43,7 +43,9 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: mcr.microsoft.com/playwright:v1.48.1-noble
-          options: --shm-size=1gb # More memory to run browser
+          # More memory to run browser and volume linking
+          options: --shm-size=1gb -v ${{ github.workspace }}:/work
           run: |
+            cd work
             npm install
             npm test
